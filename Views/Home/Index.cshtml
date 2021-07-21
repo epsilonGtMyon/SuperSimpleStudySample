@@ -1,0 +1,36 @@
+﻿@section styles {
+}
+
+@section scripts {
+}
+
+<div id="app">
+
+    <button @@click="prepareDb">DB準備</button>
+    <a :href="empSearchUrl">社員検索</a>
+</div>
+
+
+<script type="text/javascript">
+    (function () {
+
+        const app = {
+            data() {
+                return {
+                    empSearchUrl: `${ROOT_URL}empsearch`
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                async prepareDb() {
+                    await AjaxClient.post('home/preparedb')
+                }   
+            }
+
+        }
+        Vue.createApp(app).mount('#app')
+
+    })()
+
+</script>

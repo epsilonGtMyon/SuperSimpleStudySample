@@ -1,0 +1,23 @@
+﻿.app-loading {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  cursor: wait;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-loading-mark {
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  
+  border: 4px solid gray;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+
+  animation: rotation 0.5s linear infinite;
+}

@@ -1,0 +1,119 @@
+@section styles {
+<style>
+  .empResultTable {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .empResultTable td,
+  .empResultTable th {
+    border: 1px solid #dbdbdb;
+  }
+
+  .column-familyName {
+    width: 100px;
+  }
+
+  .column-firstname {
+    width: 100px;
+  }
+
+  .column-deptName {
+    width: 100px;
+  }
+
+  .column-address {
+    width: 100px;
+  }
+
+  .column-edit {
+    width: 100px;
+  }
+</style>
+}
+
+@section scripts {
+}
+
+<div id="app">
+  <h1>社員検索</h1>
+
+  <div>
+    <label>社員名:
+      <input type="text" v-model="empName" />
+    </label>
+
+    <label>部署名：住所:
+      <input type="text" v-model="deptName" />
+    </label>
+    <button @@click="search">検索</button>
+    <button @@click="newRecord">新規登録</button>
+  </div>
+
+  <div>
+    <table class="empResultTable">
+      <thead>
+        <tr>
+          <th class="column-familyName">姓</th>
+          <th class="column-firstname">名</th>
+          <th class="column-deptName">部署名</th>
+          <th class="column-address">住所</th>
+          <th class="column-edit"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="r in records">
+          <td class="column-familyName">{{ r.familyName }}</td>
+          <td class="column-firstname">{{ r.firstName }}</td>
+          <td class="column-deptName">{{ r.deptName }}</td>
+          <td class="column-address">{{ r.address }}</td>
+          <td class="column-edit">
+            <button @@click="edit(r.empCode)">編集</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+  (function () {
+
+    const app = {
+      data() {
+        return {
+          empName: '',
+          deptName: '',
+          records: [],
+        }
+      },
+      mounted() {
+      },
+      methods: {
+        async search() {
+          const param = {
+            empName: this.empName,
+            deptName: this.deptName
+          }
+          const result = await AjaxClient.get('empsearch/search', param)
+          this.records = result.rows;
+        },
+        newRecord() {
+          location.href = `${ROOT_URL}empedit`
+        },
+        edit(empCode) {
+          location.href = `${ROOT_URL}empedit?` + QueryString.stringify({
+            empCode
+          })
+        }
+
+      }
+
+    }
+    Vue.createApp(app).mount('#app')
+
+  })()
+
+</script>
