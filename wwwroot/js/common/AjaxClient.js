@@ -28,6 +28,7 @@ const AjaxClient = (function () {
         $.ajax({
           url: `${ROOT_URL}${url}`,
           method: "POST",
+          data: data,
         }).then(
           //成功時
           (data, textStatus, jqXHR) => {

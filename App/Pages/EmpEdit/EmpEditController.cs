@@ -6,6 +6,7 @@ using SuperSimpleStudySample.App.Commons.Dbs.Dao;
 using SuperSimpleStudySample.App.Pages.EmpEdit.Spec;
 using SuperSimpleStudySample.App.Commons.SelectItems;
 using SuperSimpleStudySample.App.Commons.Dbs.Entity;
+using System;
 
 namespace SuperSimpleStudySample.App.Pages.EmpEdit
 {
@@ -63,8 +64,55 @@ namespace SuperSimpleStudySample.App.Pages.EmpEdit
     }
 
     [HttpPost("register")]
-    public IActionResult Register()
+    public IActionResult Register(EmpEditRegisterRequest req)
     {
+
+      using (IDbConnection con = _dbHelper.GetConnection())
+      using (IDbTransaction tx = con.BeginTransaction())
+      {
+        try
+        {
+          Emp emp = _empDao.FindById(con, tx, req.EmpCode);
+          bool isNew = emp == null;
+
+          if (isNew)
+          {
+            emp = new Emp();
+          }
+
+          emp.EmpCode = req.EmpCode;
+          emp.FirstName = req.FirstName;
+          emp.FamilyName = req.FamilyName;
+          if (int.TryParse(req.Age, out int age))
+          {
+            emp.Age = age;
+          }
+          else
+          {
+            emp.Age = null;
+          }
+          emp.DeptCode = req.DeptCode;
+
+
+          if (isNew)
+          {
+            _empDao.Insert(con, tx, emp);
+          }
+          else
+          {
+            _empDao.Update(con, tx, emp);
+          }
+          tx.Commit();
+        }
+        catch (Exception)
+        {
+          tx.Rollback();
+          throw;
+        }
+
+
+      }
+
       //TODO
       return Ok();
     }

@@ -18,6 +18,10 @@
     width: 100px;
   }
 
+  .column-age {
+    width: 100px;
+  }
+
   .column-deptName {
     width: 100px;
   }
@@ -56,6 +60,7 @@
         <tr>
           <th class="column-familyName">姓</th>
           <th class="column-firstname">名</th>
+          <th class="column-age">年齢</th>
           <th class="column-deptName">部署名</th>
           <th class="column-address">住所</th>
           <th class="column-edit"></th>
@@ -65,6 +70,7 @@
         <tr v-for="r in records">
           <td class="column-familyName">{{ r.familyName }}</td>
           <td class="column-firstname">{{ r.firstName }}</td>
+          <td class="column-age">{{ r.age }}</td>
           <td class="column-deptName">{{ r.deptName }}</td>
           <td class="column-address">{{ r.address }}</td>
           <td class="column-edit">

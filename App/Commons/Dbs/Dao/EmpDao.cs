@@ -36,6 +36,22 @@ insert into EMP (
       return con.Execute(sql, entity, tx);
     }
 
+    public int Update(IDbConnection con, IDbTransaction tx, Emp entity)
+    {
+      string sql = @"
+update EMP set
+   FIRST_NAME = @FirstName
+  ,FAMILY_NAME = @FamilyName
+  ,AGE = @Age
+  ,DEPT_CODE = @DeptCode
+where
+   EMP_CODE = @EmpCode
+      ";
+      
+      _logger.LogInformation("{0}{1}", sql, entity);
+      return con.Execute(sql, entity, tx);
+    }
+
     public Emp FindById(IDbConnection con, IDbTransaction tx, string empCode)
     {
       string sql = @"
