@@ -7,7 +7,49 @@
 <div id="app">
   <h1>社員登録</h1>
 
-  TODO
+  <div>
+    <div>
+      <label>社員コード：
+        <input type="text" v-model="empCode" />
+      </label>
+    </div>
+
+    <div>
+      <label>姓：
+        <input type="text" v-model="familyName" />
+      </label>
+    </div>
+
+    <div>
+      <label>名：
+        <input type="text" v-model="firstName" />
+      </label>
+    </div>
+
+
+    <div>
+      <label>年齢：
+        <input type="number" v-model="age" />
+      </label>
+    </div>
+
+
+    <div>
+      <label>部署
+        <select v-model="deptCode">
+          <option v-for="item in deptCodeItems" :key="item.value" :value="item.value">
+            {{ item.text }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div>
+      <button @@click="register">登録</button>
+      <button @@click="back">戻る</button>
+    </div>
+
+  </div>
 
 </div>
 
@@ -18,10 +60,49 @@
     const app = {
       data() {
         return {
+          deptCodeItems: [],
+          empCode: '',
+          firstName: '',
+          familyName: '',
+          age: '',
+          deptCode: ''
         }
       },
-      mounted() {
+      async mounted() {
+        const qs = QueryString.parse(location.search)
+        console.log({ qs })
+        if (qs.empCode) {
+          this.empCode = qs.empCode
+        }
+        await this.init();
       },
+      methods: {
+        async init() {
+          const param = {
+            empCode: this.empCode
+          };
+          const result = await AjaxClient.get('empedit/init', param)
+          this.deptCodeItems = result.deptCodeItems
+          this.empCode = result.empCode
+          this.firstName = result.firstName
+          this.familyName = result.familyName
+          this.age = result.age != null ? String(result.age) : null
+          this.deptCode = result.deptCode
+        },
+        async register() {
+          const param = {
+            empCode: this.empCode,
+            firstName: this.firstName,
+            familyName: this.familyName,
+            age: this.age,
+            deptCode: this.deptCode
+          };
+          const result = await AjaxClient.post('empedit/register', param)
+        },
+        back() {
+          location.href = `${ROOT_URL}empsearch`
+        }
+      }
     }
     Vue.createApp(app).mount('#app')
 
