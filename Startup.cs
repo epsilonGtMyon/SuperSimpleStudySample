@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SuperSimpleStudySample.App.Commons.Configs;
 using SuperSimpleStudySample.App.Commons.Dbs;
 using SuperSimpleStudySample.App.Commons.Dbs.Dao;
 using SuperSimpleStudySample.App.Pages.EmpSearch;
@@ -29,10 +30,15 @@ namespace SuperSimpleStudySample
     {
       services.AddControllersWithViews();
 
+      //共通
+      services.AddTransient<AppConfig>();
       services.AddTransient<DbHelper>();
+      
+      //entity・dao
       services.AddTransient<DeptDao>();
       services.AddTransient<EmpDao>();
 
+      //各ページ
       services.AddTransient<HomeDao>();
       services.AddTransient<EmpSearchDao>();
       
