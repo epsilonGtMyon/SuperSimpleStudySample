@@ -37,8 +37,7 @@ const AjaxClient = (function () {
           },
           //失敗時
           (jqXHR, textStatus, errorThrown) => {
-            Loading.hide();
-            reject(errorThrown);
+            reject(jqXHR);
           }
         );
       });
