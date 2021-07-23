@@ -66,6 +66,14 @@ namespace SuperSimpleStudySample.App.Pages.EmpEdit
     [HttpPost("register")]
     public IActionResult Register(EmpEditRegisterRequest req)
     {
+      if (!ModelState.IsValid)
+      {
+        //雑だけど
+        return BadRequest(new Dictionary<string, object>
+        {
+          ["errorMessages"] = new SerializableError(ModelState) 
+        });
+      }
 
       using (IDbConnection con = _dbHelper.GetConnection())
       using (IDbTransaction tx = con.BeginTransaction())

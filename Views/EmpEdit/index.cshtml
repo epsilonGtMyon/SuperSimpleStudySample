@@ -70,7 +70,6 @@
       },
       async mounted() {
         const qs = QueryString.parse(location.search)
-        console.log({ qs })
         if (qs.empCode) {
           this.empCode = qs.empCode
         }
